@@ -1,6 +1,6 @@
 //
-//  Persist.swift
-//  Persist
+//  Persistent.swift
+//  Persistent
 //
 //  Created by Daniel Clelland on 4/06/16.
 //  Copyright © 2016 Daniel Clelland. All rights reserved.

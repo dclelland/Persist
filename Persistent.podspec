@@ -5,15 +5,15 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name                    = "Persist"
+  s.name                    = "Persistent"
   s.version                 = "0.1.0"
-  s.summary                 = "A linear interpolation microlibrary."
+  s.summary                 = "Simple type safe persistable values to use as settings within your app."
   s.homepage                = "https://github.com/dclelland/Lerp"
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source                  = { :git => "https://github.com/dclelland/Persist.git", :tag => "0.1.0" }
+  s.source                  = { :git => "https://github.com/dclelland/Persistent.git", :tag => "0.1.0" }
   s.platform                = :ios, '8.0'
   s.ios.deployment_target   = '8.0'
-  s.ios.source_files        = 'Persist.swift'
+  s.ios.source_files        = 'Persistent.swift'
   s.requires_arc            = true
 end
