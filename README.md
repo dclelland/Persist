@@ -8,7 +8,7 @@ Currently supports `Bool`, `Int`, `Float`, and `Double`.
 
 ```swift
 
-// Configutation
+// Configuration
 struct Settings {
 
     static var darkMode = Persistent(value: false, key: "darkMode")
@@ -22,7 +22,6 @@ Settings.darkMode.value = true
 Settings.openCount.value = Settings.openCount.value + 1
 
 // Getting
-
 print(Settings.darkMode.value) // true
 print(Settings.openCount.value) // 1
 
