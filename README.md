@@ -31,7 +31,26 @@ print(Settings.openCount.value) // 1
 ✓ Easily extend other types
 
 ```swift
-// TODO
+
+enum AudioState: Int {
+    case On
+    case Off
+    case Disabled
+}
+
+extension AudioState: PersistableType {
+    
+    init(persistentObject: AnyObject) {
+        self = AudioState(rawValue: (persistentObject as! NSNumber).integerValue)!
+    }
+    
+    var persistentObject: AnyObject {
+        return NSNumber(integer: self.rawValue)
+    }
+
+}
+
+var audioState = Persistent<AudioState>(value: .On, key: "audioState")
 
 ```
 

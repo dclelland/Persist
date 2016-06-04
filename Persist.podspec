@@ -5,7 +5,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name                    = "Lerp"
+  s.name                    = "Persist"
   s.version                 = "0.1.0"
   s.summary                 = "A linear interpolation microlibrary."
   s.homepage                = "https://github.com/dclelland/Lerp"
