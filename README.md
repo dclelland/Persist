@@ -1,4 +1,4 @@
-# Persist
+# Persistable
 
 Simple type safe persistable values to use as settings within your app.
 
