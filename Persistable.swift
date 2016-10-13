@@ -11,7 +11,7 @@ import Foundation
 // MARK: Persistent
 
 /// A simple struct which takes a value and persists it across sessions.
-public struct Persistent<T: PersistableType>: Persistable {
+public struct Persistent<T>: Persistable {
     
     /// The type of the persistent value.
     public typealias PersistentType = T
@@ -19,10 +19,10 @@ public struct Persistent<T: PersistableType>: Persistable {
     /// Alias around `persistentValue` and `setPersistentValue:`.
     public var value: T {
         set {
-            setPersistentValue(newValue)
+            persistentValue = newValue
         }
         get {
-            return persistentValue()
+            return persistentValue
         }
     }
     
@@ -42,7 +42,7 @@ public struct Persistent<T: PersistableType>: Persistable {
         self.defaultValue = value
         self.persistentKey = key
         
-        self.setDefaultPersistentValue(value)
+        self.register(defaultPersistentValue: value)
     }
     
     /// Resets the persistent value to the default persistent value.
@@ -58,7 +58,7 @@ public struct Persistent<T: PersistableType>: Persistable {
 public protocol Persistable {
     
     /// The type of the persistent value
-    associatedtype PersistentType: PersistableType
+    associatedtype PersistentType
     
     /// The key used to set the persistent value in NSUserDefaults
     var persistentKey: String { get }
@@ -67,85 +67,22 @@ public protocol Persistable {
 
 extension Persistable {
     
-    /// Get the persistent value from NSUserDefaults.
-    public func persistentValue() -> PersistentType {
-        return PersistentType(persistentObject: NSUserDefaults.standardUserDefaults().objectForKey(persistentKey)!)
-    }
-    
-    /// Set the persistent value in NSUserDefaults.
-    public func setPersistentValue(value: PersistentType) {
-        NSUserDefaults.standardUserDefaults().setObject(value.persistentObject, forKey: persistentKey)
+    /// Set and get the persistent value from NSUserDefaults.
+    ///
+    /// Note that the setter is declared `nonmutating`: this is so we can implement this protocol on classes.
+    /// Value semantics will be preserved: `didSet` will still get called when `Persistent`'s `value` is set.
+    public var persistentValue: PersistentType {
+        nonmutating set {
+            UserDefaults.standard.set(newValue, forKey: persistentKey)
+        }
+        get {
+            return UserDefaults.standard.object(forKey: persistentKey) as! PersistentType
+        }
     }
     
     /// Register a default value with NSUserDefaults.
-    public func setDefaultPersistentValue(value: PersistentType) {
-        NSUserDefaults.standardUserDefaults().registerDefaults([persistentKey: value.persistentObject])
+    public func register(defaultPersistentValue value: PersistentType) {
+        UserDefaults.standard.register(defaults: [persistentKey: value])
     }
     
-}
-
-// MARK: Persistable Type
-
-/// An abstract protocol which can be used to make existing objects persistable.
-public protocol PersistableType {
-    
-    /// Creates a new value using an object returned from NSUserDefaults.
-    init(persistentObject: AnyObject)
-    
-    /// Create a new object which can be saved in NSUserDefaults.
-    var persistentObject: AnyObject { get }
-
-}
-
-/// Boolean persistable type implementation
-extension Bool: PersistableType {
-
-    public init(persistentObject: AnyObject) {
-        self = (persistentObject as! NSNumber).boolValue
-    }
-    
-    public var persistentObject: AnyObject {
-        return NSNumber(bool: self)
-    }
-
-}
-
-/// Integer persistable type implementation
-extension Int: PersistableType {
-    
-    public init(persistentObject: AnyObject) {
-        self = (persistentObject as! NSNumber).integerValue
-    }
-    
-    public var persistentObject: AnyObject {
-        return NSNumber(integer: self)
-    }
-
-}
-
-/// Float persistable type implementation
-extension Float: PersistableType {
-    
-    public init(persistentObject: AnyObject) {
-        self = (persistentObject as! NSNumber).floatValue
-    }
-    
-    public var persistentObject: AnyObject {
-        return NSNumber(float: self)
-    }
-
-}
-
-
-/// Double persistable type implementation
-extension Double: PersistableType {
-    
-    public init(persistentObject: AnyObject) {
-        self = (persistentObject as! NSNumber).doubleValue
-    }
-    
-    public var persistentObject: AnyObject {
-        return NSNumber(double: self)
-    }
-
 }

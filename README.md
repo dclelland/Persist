@@ -2,9 +2,7 @@
 
 Simple type safe persistable values to use as settings within your app.
 
-Currently supports `Bool`, `Int`, `Float`, and `Double`.
-
-✓ Easy interface
+Supports the type `Any`, which you should read as, "anything which is okay with being sent to `UserDefaults.standard.set(forKey:)`".
 
 ```swift
 
@@ -12,8 +10,14 @@ Currently supports `Bool`, `Int`, `Float`, and `Double`.
 struct Settings {
 
     static var darkMode = Persistent(value: false, key: "darkMode")
-    static var openCount = Persist(value: 0, key: "openCount")
-    static var volume = Persist(value: 1.0, key: "volume")
+    
+    static var openCount = Persistent(value: 0, key: "openCount")
+    
+    static var volume = Persistent(value: 1.0, key: "volume") {
+        didSet {
+            print("Volume changed to \(volume.value)")
+        }
+    }
 
 }
 
@@ -27,35 +31,3 @@ print(Settings.darkMode.value) // true
 print(Settings.openCount.value) // 1
 
 ```
-
-✓ Easily extend other types
-
-```swift
-
-enum AudioState: Int {
-    case On
-    case Off
-    case Disabled
-}
-
-extension AudioState: PersistableType {
-    
-    init(persistentObject: AnyObject) {
-        self = AudioState(rawValue: (persistentObject as! NSNumber).integerValue)!
-    }
-    
-    var persistentObject: AnyObject {
-        return NSNumber(integer: self.rawValue)
-    }
-
-}
-
-var audioState = Persistent<AudioState>(value: .On, key: "audioState")
-
-```
-
-### Todo:
-
-- Strings
-- Arrays (might have to wait for extensible generics)
-- Dictionaries (might have to wait for extensible generics)
