@@ -6,14 +6,17 @@
 #
 Pod::Spec.new do |s|
   s.name                    = "Persistable"
-  s.version                 = "1.0.0"
+  s.version                 = "1.1.0"
   s.summary                 = "Simple type safe persistable values to use as settings within your app."
   s.homepage                = "https://github.com/dclelland/Persistable"
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source                  = { :git => "https://github.com/dclelland/Persistable.git", :tag => "1.0.0" }
-  s.platform                = :ios, '8.0'
+  s.source                  = { :git => "https://github.com/dclelland/Persistable.git", :tag => "1.1.0" }
+  s.requires_arc            = true
+
   s.ios.deployment_target   = '8.0'
   s.ios.source_files        = 'Persistable.swift'
-  s.requires_arc            = true
+
+  s.osx.deployment_target   = '10.10'
+  s.osx.source_files        = 'Persistable.swift'
 end
